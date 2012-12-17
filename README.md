@@ -4,7 +4,7 @@ Orbiter
 
 For most iOS client / server applications, push notifications are negotiated through an intermediary service provider, such as [Urban Airship](http://urbanairship.com). The service provider exposes APIs to register a device token, as well as APIs to send push notifications to devices meeting some specified criteria.
 
-Orbiter is a small library that provides simple interfaces to register (and unregister) for Push Notifications with [Urban Airship](http://urbanairship.com), [Parse](https://parse.com), and domains running [Rack::PushNotification](https://github.com/mattt/rack-push-notification).
+Orbiter is a small library that provides simple interfaces to register (and unregister) for Push Notifications with [Urban Airship](http://urbanairship.com) and [Parse](https://parse.com) (without needing to include their SDKs), as well as domains running [Rack::PushNotification](https://github.com/mattt/rack-push-notification).
 
 > Orbiter is named for the [orbital space craft of the Space Shuttle program](http://en.wikipedia.org/wiki/Space_Shuttle_orbiter), which houses the flight crew and electronics used to communicate with mission control.
 
