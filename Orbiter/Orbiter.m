@@ -166,6 +166,19 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
 
 #pragma mark - Orbiter
 
+- (id)initWithBaseURL:(NSURL *)baseURL
+           credential:(NSURLCredential *)credential
+{
+    self = [super initWithBaseURL:baseURL credential:credential];
+    if (!self) {
+        return nil;
+    }
+
+    [self.HTTPClient setDefaultHeader:@"Accept" value:@"text/plain"];
+
+    return self;
+}
+
 - (NSURLRequest *)requestForRegistrationOfDeviceToken:(id)deviceToken
                                           withPayload:(NSDictionary *)payload
 {
