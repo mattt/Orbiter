@@ -72,8 +72,8 @@
 /**
  
  */
-+ (UrbanAirshipOrbiter *)urbanAirshipManagerWithApplicationKey:(NSString *)key
-                                             applicationSecret:(NSString *)secret;
++ (instancetype)urbanAirshipManagerWithApplicationKey:(NSString *)key
+                                    applicationSecret:(NSString *)secret;
 
 /**
  
@@ -97,8 +97,8 @@
 /**
  
  */
-+ (ParseOrbiter *)parseManagerWithApplicationID:(NSString *)applicationID
-                                     RESTAPIKey:(NSString *)RESTAPIKey;
++ (instancetype)parseManagerWithApplicationID:(NSString *)applicationID
+                                   RESTAPIKey:(NSString *)RESTAPIKey;
 
 /**
  

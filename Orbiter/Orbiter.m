@@ -158,8 +158,8 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
 
 @implementation UrbanAirshipOrbiter
 
-+ (Orbiter *)urbanAirshipManagerWithApplicationKey:(NSString *)key
-                                   applicationSecret:(NSString *)secret
++ (instancetype)urbanAirshipManagerWithApplicationKey:(NSString *)key
+                                    applicationSecret:(NSString *)secret
 {
     return [[UrbanAirshipOrbiter alloc] initWithBaseURL:[NSURL URLWithString:kUrbanAirshipAPIBaseURLString] credential:[NSURLCredential credentialWithUser:key password:secret persistence:NSURLCredentialPersistenceForSession]];
 }
@@ -243,8 +243,8 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
 
 @implementation ParseOrbiter
 
-+ (Orbiter *)parseManagerWithApplicationID:(NSString *)applicationID
-                                  RESTAPIKey:(NSString *)RESTAPIKey
++ (instancetype)parseManagerWithApplicationID:(NSString *)applicationID
+                                   RESTAPIKey:(NSString *)RESTAPIKey
 {
     ParseOrbiter *orbiter = [[ParseOrbiter alloc] initWithBaseURL:[NSURL URLWithString:kParseAPIBaseURLString] credential:nil];
     [orbiter.HTTPClient setDefaultHeader:@"X-Parse-Application-Id" value:applicationID];
