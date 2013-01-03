@@ -130,6 +130,11 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
             failure(error);
         }
     }];
+
+    if ([operation isKindOfClass:[AFJSONRequestOperation class]] && [operation respondsToSelector:@selector(setJSONReadingOptions:)]) {
+        operation.JSONReadingOptions = NSJSONReadingAllowFragments;
+    }
+
     [self.HTTPClient enqueueHTTPRequestOperation:operation];
 }
 
