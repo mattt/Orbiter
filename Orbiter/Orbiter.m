@@ -131,10 +131,6 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
         }
     }];
 
-    if ([operation isKindOfClass:[AFJSONRequestOperation class]] && [operation respondsToSelector:@selector(setJSONReadingOptions:)]) {
-        operation.JSONReadingOptions = NSJSONReadingAllowFragments;
-    }
-
     [self.HTTPClient enqueueHTTPRequestOperation:operation];
 }
 
@@ -179,7 +175,8 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
         return nil;
     }
 
-    [self.HTTPClient setDefaultHeader:@"Accept" value:@"text/plain"];
+    [self.HTTPClient setDefaultHeader:@"Accept" value:@"application/json | text/plain"];
+    [self.HTTPClient setDefaultHeader:@"Content-Type" value:@"application/json"];
 
     return self;
 }
