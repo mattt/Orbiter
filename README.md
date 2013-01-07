@@ -32,7 +32,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    NSURL *serverURL = [NSURL URLWithString:@"http://raging-notification-3556.herokuapp.com/"]
+    NSURL *serverURL = [NSURL URLWithString:@"http://raging-notification-3556.herokuapp.com/"];
     Orbiter *orbiter = [[Orbiter alloc] initWithBaseURL:serverURL credential:nil];
     [orbiter registerDeviceToken:deviceToken withAlias:nil success:^(id responseObject) {
         NSLog(@"Registration Success: %@", responseObject);
