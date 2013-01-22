@@ -174,7 +174,7 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
         return nil;
     }
 
-    [self.HTTPClient setDefaultHeader:@"Accept" value:@"text/plain"];
+    [self.HTTPClient setDefaultHeader:@"Accept" value:@"*/*"];
 
     return self;
 }
