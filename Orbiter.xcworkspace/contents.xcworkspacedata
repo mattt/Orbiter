@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:Orbiter"
+      name = "Orbiter">
+      <FileRef
+         location = "group:Orbiter.h">
+      </FileRef>
+      <FileRef
+         location = "group:Orbiter.m">
+      </FileRef>
+   </Group>
+</Workspace>
