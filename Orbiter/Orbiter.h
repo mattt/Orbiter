@@ -24,6 +24,8 @@
 
 @interface Orbiter : NSObject
 
+@property (strong, nonatomic) NSMutableDictionary *payload;
+
 /**
  
  */
@@ -63,6 +65,12 @@
 - (void)unregisterDeviceToken:(id)deviceToken
                       success:(void (^)())success
                       failure:(void (^)(NSError *error))failure;
+                      
+/**
+
+ */
+ - (void)configureDefaultPayload;
+ 
 @end
 
 #pragma mark -
