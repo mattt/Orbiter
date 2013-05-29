@@ -42,7 +42,6 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
     dispatch_once(&onceToken, ^{
         if ([CLLocationManager locationServicesEnabled]) {
             _sharedLocationManager = [[CLLocationManager alloc] init];
-            _sharedLocationManager.purpose = NSLocalizedStringFromTable(@"This application uses your current location to send targeted push notifications.", @"Orbiter", nil);
             _sharedLocationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
             [_sharedLocationManager startUpdatingLocation];
         }
