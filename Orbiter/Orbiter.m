@@ -248,6 +248,7 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
     ParseOrbiter *orbiter = [[ParseOrbiter alloc] initWithBaseURL:[NSURL URLWithString:kParseAPIBaseURLString] credential:nil];
     [orbiter.HTTPClient setDefaultHeader:@"X-Parse-Application-Id" value:applicationID];
     [orbiter.HTTPClient setDefaultHeader:@"X-Parse-REST-API-Key" value:RESTAPIKey];
+    orbiter.HTTPClient.parameterEncoding = AFJSONParameterEncoding;
     
     return orbiter;
 }
