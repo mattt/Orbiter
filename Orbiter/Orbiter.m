@@ -1,5 +1,5 @@
 // Orbiter.m
-// 
+//
 // Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,19 +21,20 @@
 // THE SOFTWARE.
 
 #import "Orbiter.h"
-#import "AFHTTPClient.h"
-#import "AFJSONRequestOperation.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "AFURLRequestSerialization.h"
+#import "AFURLResponseSerialization.h"
 
 static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
     return [[[[deviceToken description] uppercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
 @interface Orbiter ()
-@property (readwrite, nonatomic, strong) AFHTTPClient *HTTPClient;
+@property (readwrite, nonatomic, strong) AFHTTPRequestOperationManager *HTTPManager;
 @end
 
 @implementation Orbiter
-@synthesize HTTPClient = _HTTPClient;
+@synthesize HTTPManager = _HTTPManager;
 
 #ifdef __CORELOCATION__
 + (CLLocationManager *)sharedLocationManager {
@@ -59,26 +60,30 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
         return nil;
     }
     
-    self.HTTPClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
-    [self.HTTPClient setDefaultHeader:@"Accept" value:@"application/json"];
-    [self.HTTPClient setParameterEncoding:AFJSONParameterEncoding];
-    [self.HTTPClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
-
+    AFJSONRequestSerializer *jsonReqSerializer = [AFJSONRequestSerializer serializer];
+    [jsonReqSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     if (credential) {
-        [self.HTTPClient setAuthorizationHeaderWithUsername:credential.user password:credential.password];
+        [jsonReqSerializer setAuthorizationHeaderFieldWithUsername:credential.user password:credential.password];
     }
+    
+    self.HTTPManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    self.HTTPManager.requestSerializer = jsonReqSerializer;
     
     return self;
 }
 
 - (NSURLRequest *)requestForRegistrationOfDeviceToken:(id)deviceToken
                                           withPayload:(NSDictionary *)payload
-{    
-    return [self.HTTPClient requestWithMethod:@"PUT" path:[NSString stringWithFormat:@"devices/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:payload];
+{
+    NSString *path = [NSString stringWithFormat:@"devices/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
+    NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"PUT" URLString:urlString parameters:payload];
 }
 
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
-    return [self.HTTPClient requestWithMethod:@"DELETE" path:[NSString stringWithFormat:@"devices/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:nil];
+    NSString *path = [NSString stringWithFormat:@"devices/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
+    NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:urlString parameters:nil];
 }
 
 #pragma mark -
@@ -120,7 +125,8 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
                     failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [self requestForRegistrationOfDeviceToken:deviceToken withPayload:payload];
-    AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    AFHTTPRequestOperation *op = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(responseObject);
         }
@@ -129,7 +135,8 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
             failure(error);
         }
     }];
-    [self.HTTPClient enqueueHTTPRequestOperation:operation];
+    
+    [op resume];
 }
 
 - (void)unregisterDeviceToken:(NSString *)deviceToken
@@ -137,16 +144,18 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
                       failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [self requestForUnregistrationOfDeviceToken:deviceToken];
-    AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    AFHTTPRequestOperation *op = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            success();
+            success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
         }
     }];
-    [self.HTTPClient enqueueHTTPRequestOperation:operation];
+    
+    [op resume];
 }
 
 @end
@@ -172,20 +181,24 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
     if (!self) {
         return nil;
     }
-
-    [self.HTTPClient setDefaultHeader:@"Accept" value:@"*/*"];
-
+    
+    [self.HTTPManager.requestSerializer setValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    
     return self;
 }
 
 - (NSURLRequest *)requestForRegistrationOfDeviceToken:(id)deviceToken
                                           withPayload:(NSDictionary *)payload
 {
-    return [self.HTTPClient requestWithMethod:@"PUT" path:[NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:payload];
+    NSString *path = [NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
+    NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"PUT" URLString:urlString parameters:payload];
 }
 
-- (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
-    return [self.HTTPClient requestWithMethod:@"DELETE" path:[NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:nil];
+- (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken
+{
+    
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:[NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:nil];
 }
 
 - (void)registerDeviceToken:(NSString *)deviceToken
@@ -246,9 +259,8 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
                                    RESTAPIKey:(NSString *)RESTAPIKey
 {
     ParseOrbiter *orbiter = [[ParseOrbiter alloc] initWithBaseURL:[NSURL URLWithString:kParseAPIBaseURLString] credential:nil];
-    [orbiter.HTTPClient setDefaultHeader:@"X-Parse-Application-Id" value:applicationID];
-    [orbiter.HTTPClient setDefaultHeader:@"X-Parse-REST-API-Key" value:RESTAPIKey];
-    orbiter.HTTPClient.parameterEncoding = AFJSONParameterEncoding;
+    [orbiter.HTTPManager.requestSerializer setValue:applicationID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [orbiter.HTTPManager.requestSerializer setValue:RESTAPIKey forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     
     return orbiter;
 }
@@ -258,7 +270,8 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
 - (NSURLRequest *)requestForRegistrationOfDeviceToken:(id)deviceToken
                                           withPayload:(NSDictionary *)payload
 {
-    return [self.HTTPClient requestWithMethod:@"POST" path:@"installations" parameters:payload];
+    NSString *path = [[self.HTTPManager.baseURL URLByAppendingPathComponent:@"installations"] absoluteString];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"POST" URLString:path parameters:payload];
 }
 
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
