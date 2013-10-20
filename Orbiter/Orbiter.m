@@ -141,7 +141,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
         }
     }];
     
-    [op resume];
+    [self.HTTPManager.operationQueue addOperation:op];
 }
 
 - (void)unregisterDeviceToken:(NSString *)deviceToken
@@ -159,8 +159,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
             failure(error);
         }
     }];
-    
-    [op resume];
+    [self.HTTPManager.operationQueue addOperation:op];
 }
 
 @end
