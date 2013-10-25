@@ -25,7 +25,12 @@
 #import "AFJSONRequestOperation.h"
 
 static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
-    return [[[[deviceToken description] uppercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if ([deviceToken isKindOfClass:[NSData class]]) {
+        const unsigned *bytes = [(NSData *)deviceToken bytes];
+        return [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x", ntohl(bytes[0]), ntohl(bytes[1]), ntohl(bytes[2]), ntohl(bytes[3]), ntohl(bytes[4]), ntohl(bytes[5]), ntohl(bytes[6]), ntohl(bytes[7])];
+    } else {
+        return [[[[deviceToken description] uppercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    }
 }
 
 @interface Orbiter ()
