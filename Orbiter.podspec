@@ -8,5 +8,5 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/mattt/Orbiter.git', :tag => '0.0.3' }
   s.source_files = 'Orbiter'
   s.requires_arc = true
-  s.dependency 'AFNetworking', '>= 0.9'
+  s.dependency 'AFNetworking', '>= 1.2.0'
 end
