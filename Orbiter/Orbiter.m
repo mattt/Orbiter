@@ -70,7 +70,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
     [self.HTTPClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
 
     if (credential) {
-        [self.HTTPClient setAuthorizationHeaderWithUsername:credential.user password:credential.password];
+        [self.HTTPClient setDefaultCredential:credential];
     }
     
     return self;
