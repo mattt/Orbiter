@@ -99,7 +99,6 @@
  
  @return The constructed push notification unregistration request.
  */
-*/
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken;
 
 @end
