@@ -98,7 +98,6 @@
  @param deviceToken The device token. This can be either an `NSString` or `NSData` representation.
  
  @return The constructed push notification unregistration request.
- */
 */
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken;
 
