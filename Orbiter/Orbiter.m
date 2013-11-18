@@ -39,7 +39,6 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 @end
 
 @implementation Orbiter
-@synthesize HTTPManager = _HTTPManager;
 
 #ifdef __CORELOCATION__
 + (CLLocationManager *)sharedLocationManager {
