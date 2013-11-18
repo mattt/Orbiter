@@ -65,14 +65,12 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
         return nil;
     }
     
-    AFJSONRequestSerializer *jsonReqSerializer = [AFJSONRequestSerializer serializer];
-    [jsonReqSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    if (credential) {
-        [jsonReqSerializer setAuthorizationHeaderFieldWithUsername:credential.user password:credential.password];
-    }
-    
     self.HTTPManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
-    self.HTTPManager.requestSerializer = jsonReqSerializer;
+    self.HTTPManager.credential = credential;
+    
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    self.HTTPManager.requestSerializer = requestSerializer;
     
     return self;
 }
@@ -131,11 +129,11 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
     NSURLRequest *request = [self requestForRegistrationOfDeviceToken:deviceToken withPayload:payload];
     
-    AFHTTPRequestOperation *requestOperation = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(responseObject);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -150,11 +148,11 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
     NSURLRequest *request = [self requestForUnregistrationOfDeviceToken:deviceToken];
     
-    AFHTTPRequestOperation *requestOperation = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(responseObject);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
         }
