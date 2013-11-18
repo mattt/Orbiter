@@ -66,13 +66,10 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
     
     self.HTTPClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
     [self.HTTPClient setDefaultHeader:@"Accept" value:@"application/json"];
+    [self.HTTPClient setDefaultCredential:credential];
     [self.HTTPClient setParameterEncoding:AFJSONParameterEncoding];
     [self.HTTPClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
 
-    if (credential) {
-        [self.HTTPClient setAuthorizationHeaderWithUsername:credential.user password:credential.password];
-    }
-    
     return self;
 }
 
