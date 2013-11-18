@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #import "Orbiter.h"
+
 #import "AFHTTPRequestOperationManager.h"
 #import "AFURLRequestSerialization.h"
 #import "AFURLResponseSerialization.h"
@@ -130,7 +131,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
     NSURLRequest *request = [self requestForRegistrationOfDeviceToken:deviceToken withPayload:payload];
     
-    AFHTTPRequestOperation *op = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(responseObject);
         }
@@ -140,7 +141,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
         }
     }];
     
-    [self.HTTPManager.operationQueue addOperation:op];
+    [self.HTTPManager.operationQueue addOperation:requestOperation];
 }
 
 - (void)unregisterDeviceToken:(NSString *)deviceToken
@@ -149,7 +150,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
     NSURLRequest *request = [self requestForUnregistrationOfDeviceToken:deviceToken];
     
-    AFHTTPRequestOperation *op = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [self.HTTPManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(responseObject);
         }
@@ -158,7 +159,8 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
             failure(error);
         }
     }];
-    [self.HTTPManager.operationQueue addOperation:op];
+    
+    [self.HTTPManager.operationQueue addOperation:requestOperation];
 }
 
 @end
