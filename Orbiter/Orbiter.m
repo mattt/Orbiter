@@ -72,6 +72,9 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
     [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     self.HTTPManager.requestSerializer = requestSerializer;
     
+    self.HTTPManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [self.HTTPManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/plain", nil]];
+    
     return self;
 }
 
