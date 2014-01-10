@@ -240,8 +240,8 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
     
     if (quietTimeStartComponents && quietTimeEndComponents) {
         NSMutableDictionary *mutableQuietTimePayload = [NSMutableDictionary dictionary];
-        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02d:%02d", [quietTimeStartComponents hour], [quietTimeStartComponents minute]] forKey:@"start"];
-        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02d:%02d", [quietTimeEndComponents hour], [quietTimeEndComponents minute]] forKey:@"end"];
+        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02ld:%02ld", (long)[quietTimeStartComponents hour], (long)[quietTimeStartComponents minute]] forKey:@"start"];
+        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02ld:%02ld", (long)[quietTimeEndComponents hour], (long)[quietTimeEndComponents minute]] forKey:@"end"];
         
         [mutablePayload setValue:mutableQuietTimePayload forKey:@"quiettime"];
     }
