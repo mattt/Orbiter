@@ -83,13 +83,13 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
     NSString *path = [NSString stringWithFormat:@"devices/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
     NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
-    return [self.HTTPManager.requestSerializer requestWithMethod:@"PUT" URLString:urlString parameters:payload];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"PUT" URLString:urlString parameters:payload error:nil];
 }
 
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
     NSString *path = [NSString stringWithFormat:@"devices/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
     NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
-    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:urlString parameters:nil];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:urlString parameters:nil error:nil];
 }
 
 #pragma mark -
@@ -198,13 +198,12 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
 {
     NSString *path = [NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
     NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
-    return [self.HTTPManager.requestSerializer requestWithMethod:@"PUT" URLString:urlString parameters:payload];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"PUT" URLString:urlString parameters:payload error:nil];
 }
 
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken
 {
-    
-    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:[NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:nil];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:[NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:nil error:nil];
 }
 
 - (void)registerDeviceToken:(NSString *)deviceToken
@@ -242,7 +241,6 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
         NSMutableDictionary *mutableQuietTimePayload = [NSMutableDictionary dictionary];
         [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02ld:%02ld", (long)[quietTimeStartComponents hour], (long)[quietTimeStartComponents minute]] forKey:@"start"];
         [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02ld:%02ld", (long)[quietTimeEndComponents hour], (long)[quietTimeEndComponents minute]] forKey:@"end"];
-        
         [mutablePayload setValue:mutableQuietTimePayload forKey:@"quiettime"];
     }
     
@@ -277,7 +275,7 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
                                           withPayload:(NSDictionary *)payload
 {
     NSString *path = [[self.HTTPManager.baseURL URLByAppendingPathComponent:@"installations"] absoluteString];
-    return [self.HTTPManager.requestSerializer requestWithMethod:@"POST" URLString:path parameters:payload];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"POST" URLString:path parameters:payload error:nil];
 }
 
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
