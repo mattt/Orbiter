@@ -100,7 +100,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
                     failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutablePayload = [NSMutableDictionary dictionary];
-    [mutablePayload setValue:[[NSLocale currentLocale] identifier] forKey:@"locale"];
+    [mutablePayload setValue:[[NSLocale currentLocale] localeIdentifier] forKey:@"locale"];
     [mutablePayload setValue:[[NSLocale preferredLanguages] objectAtIndex:0] forKey:@"language"];
     [mutablePayload setValue:[[NSTimeZone defaultTimeZone] name] forKey:@"timezone"];
     
