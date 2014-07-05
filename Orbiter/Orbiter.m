@@ -273,14 +273,14 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
 
 #pragma mark - Orbiter
 
-- (NSURLRequest *)requestForRegistrationOfDeviceToken:(id)deviceToken
+- (NSURLRequest *)requestForRegistrationOfDeviceToken:(__unused id)deviceToken
                                           withPayload:(NSDictionary *)payload
 {
     NSString *path = [[self.HTTPManager.baseURL URLByAppendingPathComponent:@"installations"] absoluteString];
     return [self.HTTPManager.requestSerializer requestWithMethod:@"POST" URLString:path parameters:payload error:nil];
 }
 
-- (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
+- (NSURLRequest *)requestForUnregistrationOfDeviceToken:(__unused id)deviceToken {
     return nil;
 }
 
@@ -324,9 +324,9 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
     [self registerDeviceToken:deviceToken withPayload:mutablePayload success:success failure:failure];
 }
 
-- (void)unregisterDeviceToken:(id)deviceToken
-                      success:(void (^)())success
-                      failure:(void (^)(NSError *))failure
+- (void)unregisterDeviceToken:(__unused id)deviceToken
+                      success:(__unused void (^)())success
+                      failure:(__unused void (^)(NSError *))failure
 {
     [NSException raise:@"Unregistraion not supported by Parse API" format:nil];
 }
