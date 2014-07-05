@@ -203,7 +203,9 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
 
 - (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken
 {
-    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:[NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)] parameters:nil error:nil];
+    NSString *path = [NSString stringWithFormat:@"device_tokens/%@", AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken)];
+    NSString *urlString = [[self.HTTPManager.baseURL URLByAppendingPathComponent:path] absoluteString];
+    return [self.HTTPManager.requestSerializer requestWithMethod:@"DELETE" URLString:urlString parameters:nil error:nil];
 }
 
 - (void)registerDeviceToken:(NSString *)deviceToken
