@@ -177,7 +177,7 @@
 - (void)registerDeviceToken:(id)deviceToken
                   withAlias:(NSString *)alias
                       badge:(NSNumber *)badge
-                   channels:(NSSet *)tags
+                   channels:(NSSet *)channels
                    timeZone:(NSTimeZone *)timeZone
                     success:(void (^)(id responseObject))success
                     failure:(void (^)(NSError *error))failure;
