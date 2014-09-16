@@ -13,6 +13,8 @@ Pod::Spec.new do |s|
 
   s.dependency 'AFNetworking', '~> 1.3'
 
+  s.ios.deployment_target = '5.0'
+
   s.prefix_header_contents = <<-EOS
   #import <Availability.h>
 
