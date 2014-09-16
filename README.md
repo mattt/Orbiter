@@ -48,7 +48,6 @@ Mattt Thompson
 
 - http://github.com/mattt
 - http://twitter.com/mattt
-- m@mattt.me
 
 ## License
 

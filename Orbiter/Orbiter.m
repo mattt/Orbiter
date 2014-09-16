@@ -91,7 +91,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
                     failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutablePayload = [NSMutableDictionary dictionary];
-    [mutablePayload setValue:[[NSLocale currentLocale] identifier] forKey:@"locale"];
+    [mutablePayload setValue:[[NSLocale currentLocale] localeIdentifier] forKey:@"locale"];
     [mutablePayload setValue:[[NSLocale preferredLanguages] objectAtIndex:0] forKey:@"language"];
     [mutablePayload setValue:[[NSTimeZone defaultTimeZone] name] forKey:@"timezone"];
     
@@ -223,8 +223,8 @@ static NSString * const kUrbanAirshipAPIBaseURLString = @"https://go.urbanairshi
     
     if (quietTimeStartComponents && quietTimeEndComponents) {
         NSMutableDictionary *mutableQuietTimePayload = [NSMutableDictionary dictionary];
-        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02d:%02d", [quietTimeStartComponents hour], [quietTimeStartComponents minute]] forKey:@"start"];
-        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02d:%02d", [quietTimeEndComponents hour], [quietTimeEndComponents minute]] forKey:@"end"];
+        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02ld:%02ld", (long)[quietTimeStartComponents hour], (long)[quietTimeStartComponents minute]] forKey:@"start"];
+        [mutableQuietTimePayload setValue:[NSString stringWithFormat:@"%02ld:%02ld", (long)[quietTimeEndComponents hour], (long)[quietTimeEndComponents minute]] forKey:@"end"];
         
         [mutablePayload setValue:mutableQuietTimePayload forKey:@"quiettime"];
     }
@@ -257,13 +257,13 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
 
 #pragma mark - Orbiter
 
-- (NSURLRequest *)requestForRegistrationOfDeviceToken:(id)deviceToken
+- (NSURLRequest *)requestForRegistrationOfDeviceToken:(__unused id)deviceToken
                                           withPayload:(NSDictionary *)payload
 {
     return [self.HTTPClient requestWithMethod:@"POST" path:@"installations" parameters:payload];
 }
 
-- (NSURLRequest *)requestForUnregistrationOfDeviceToken:(id)deviceToken {
+- (NSURLRequest *)requestForUnregistrationOfDeviceToken:(__unused id)deviceToken {
     return nil;
 }
 
@@ -307,9 +307,9 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
     [self registerDeviceToken:deviceToken withPayload:mutablePayload success:success failure:failure];
 }
 
-- (void)unregisterDeviceToken:(id)deviceToken
-                      success:(void (^)())success
-                      failure:(void (^)(NSError *))failure
+- (void)unregisterDeviceToken:(__unused id)deviceToken
+                      success:(__unused void (^)())success
+                      failure:(__unused void (^)(NSError *))failure
 {
     [NSException raise:@"Unregistraion not supported by Parse API" format:nil];
 }
