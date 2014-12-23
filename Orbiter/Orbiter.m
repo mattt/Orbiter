@@ -318,7 +318,7 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
     }
     
     if (timeZone) {
-        [mutablePayload setValue:[timeZone name] forKey:@"tz"];
+        [mutablePayload setValue:[timeZone name] forKey:@"timeZone"];
     }
     
     [self registerDeviceToken:deviceToken withPayload:mutablePayload success:success failure:failure];
