@@ -1,6 +1,6 @@
 // Orbiter.m
 //
-// Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2012-2014 Mattt Thompson (http://mattt.me/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,10 @@
 // THE SOFTWARE.
 
 #import "Orbiter.h"
+
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
+#import <UIKit/UIKit.h>
+#endif
 
 #import "AFHTTPRequestOperationManager.h"
 #import "AFURLRequestSerialization.h"
@@ -114,8 +118,14 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
     
     NSMutableSet *mutableTags = [NSMutableSet set];
     [mutableTags addObject:[NSString stringWithFormat:@"v%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
     [mutableTags addObject:[[UIDevice currentDevice] model]];
     [mutableTags addObject:[NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]]];
+#elif defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+    [mutableTags addObject:[[NSProcessInfo processInfo] operatingSystemVersionString]];
+#endif
+    
     [mutablePayload setValue:[mutableTags allObjects] forKey:@"tags"];
     
     if (alias) {
