@@ -305,10 +305,6 @@ static NSString * const kParseAPIBaseURLString = @"https://api.parse.com/1/";
     [mutablePayload setValue:@"ios" forKey:@"deviceType"];
     [mutablePayload setValue:AFNormalizedDeviceTokenStringWithDeviceToken(deviceToken) forKey:@"deviceToken"];
     
-    if (alias) {
-        [mutablePayload setValue:alias forKey:@"alias"];
-    }
-    
     if (badge) {
         [mutablePayload setValue:[badge stringValue] forKey:@"badge"];
     }
