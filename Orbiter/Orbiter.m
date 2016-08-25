@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "Orbiter.h"
-@import AFNetworking;
+#import "AFNetworking.h"
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #import <UIKit/UIKit.h>
@@ -67,7 +67,6 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
   }
 
   self.SessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-  //    self.SessionManager.credential = credential;
 
   AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
   [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
