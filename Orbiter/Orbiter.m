@@ -138,7 +138,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
   NSURLRequest *request = [self requestForRegistrationOfDeviceToken:deviceToken withPayload:payload];
 
-  [self.SessionManager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+  NSURLSessionDataTask *dataTask = [self.SessionManager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
     if (error && failure) {
       failure(error);
     }else{
@@ -147,6 +147,8 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
       }
     }
   }];
+
+  [dataTask resume];
 }
 
 - (void)unregisterDeviceToken:(NSString *)deviceToken
@@ -155,7 +157,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
 {
   NSURLRequest *request = [self requestForUnregistrationOfDeviceToken:deviceToken];
 
-  [self.SessionManager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+  NSURLSessionDataTask *dataTask = [self.SessionManager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
     if (error && failure) {
       failure(error);
     }else{
@@ -164,6 +166,7 @@ static NSString * AFNormalizedDeviceTokenStringWithDeviceToken(id deviceToken) {
       }
     }
   }];
+  [dataTask resume];
 }
 
 @end
