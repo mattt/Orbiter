@@ -1,6 +1,6 @@
-Orbiter
-=======
-**Push Notification Registration for iOS**
+# Orbiter
+
+> **Note**: This project is no longer being maintained.
 
 For most iOS client / server applications, push notifications are negotiated through an intermediary service provider, such as [Urban Airship](http://urbanairship.com). The service provider exposes APIs to register a device token, as well as APIs to send push notifications to devices meeting some specified criteria.
 
@@ -41,13 +41,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     }];
 }
 ```
-
-## Contact
-
-Mattt Thompson
-
-- http://github.com/mattt
-- http://twitter.com/mattt
 
 ## License
 
